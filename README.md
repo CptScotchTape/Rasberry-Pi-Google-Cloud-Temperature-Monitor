@@ -43,7 +43,9 @@ Instead of the previous screen, if you see a screen to enable APIs, please enabl
 ![Device Details](https://packt-type-cloud.s3.amazonaws.com/uploads/sites/2518/2018/05/d835136a-e769-488c-a994-1ecabf7736eb.png)
 8. Now, we are going to add a new public key. To generate a public/private key pair, we need to have OpenSSL command line available. You can download and set up OpenSSL from here: https://www.openssl.org/source/.
 9. Use the following command to generate a certificate pair at the default location on your machine:
-> openssl req -x509 -newkey rsa:2048 -keyout rsa_private.pem -nodes -out rsa_cert.pem -subj "/CN=unused"
+```
+openssl req -x509 -newkey rsa:2048 -keyout rsa_private.pem -nodes -out rsa_cert.pem -subj "/CN=unused"
+```
 10. If everything goes well, you should see an output as shown here:
 ![openSSL](https://packt-type-cloud.s3.amazonaws.com/uploads/sites/2518/2018/05/b2bb3941-646a-484a-9cf0-76f5f5e75c8e.png)
 Do not share these certificates anywhere; anyone with these certificates can connect to Google IoT Core as a device and start publishing data.
@@ -69,14 +71,26 @@ The following steps are to be used for the setup process:
 ## Setting up Node.js
 Refer to the following steps to install Node.js:
 1. Open a new Terminal and run the following commands:
-> $ sudo apt update
-> $ sudo apt full-upgrade
+```
+$ sudo apt update
+```
+```
+$ sudo apt full-upgrade
+```
 2. This will upgrade all the packages that need upgrades. Next, we will install the latest version of Node.js. We will be using the Node 7.x version:
-> $ curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
-> $ sudo apt install nodejs
+```
+$ curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
+```
+```
+$ sudo apt install nodejs
+```
 3. This will take a moment to install, and once your installation is done, you should be able to run the following commands to see the version of Node.js and npm:
-> $ node -v
-> $ npm -v
+```
+$ node -v
+```
+```
+$ npm -v
+```
 ## Developing the Node.js device app
 Now, we will set up the app and write the required code:
 1. From the Terminal, once you are inside the Google-IoT-Device folder, run the following command:
@@ -86,7 +100,8 @@ Now, we will set up the app and write the required code:
 3. Next, we will install rpi-dht-sensor (https://www.npmjs.com/package/rpi-dht-sensor) from npm. This module will help in reading the DHT11 temperature and humidity values:
 > $ npm install rpi-dht-sensor --save
 4. Your final package.json file should look similar to the following code snippet:
->{ 
+```
+{ 
  "name": "Google-IoT-Device", 
  "version": "1.0.0", 
  "description": "", 
@@ -103,11 +118,13 @@ Now, we will set up the app and write the required code:
   "rpi-dht-sensor": "^0.1.1" 
  } 
 }
+```
 5. Now that we have the required dependencies installed, let’s continue. Create a new file named index.js at the root of the Google-IoT-Device folder. Next, create a folder named certs at the root of the Google-IoT-Device folder and move the two certificates we created using OpenSSL there.
 6. Your final folder structure should look something like this:
 ![Pi tree](https://packt-type-cloud.s3.amazonaws.com/uploads/sites/2518/2018/05/cb7b7d25-2768-4aa4-bb78-85168c2fba1b.png)
 7. Open index.js in any text editor and update it as shown here:
-> var fs = require('fs'); 
+```
+var fs = require('fs'); 
 var jwt = require('jsonwebtoken'); 
 var mqtt = require('mqtt'); 
 var rpiDhtSensor = require('rpi-dht-sensor'); 
@@ -199,6 +216,7 @@ function sendData() {
   console.log('Transmitting in 30 seconds'); 
   setTimeout(sendData, 30000); 
 }
+```
 In the previous code, we first define the projectId, cloudRegion, registryId, and deviceId based on what we have created. Next, we build the connectionArgs object, using which we are going to connect to Google IoT Core using MQTT-SN. Do note that the password property is a JSON Web Token (JWT), based on the projectId and privateKeyFile algorithm.
 
 The token that is created by this function is valid only for one day. After one day, the cloud will refuse connection to this device if the same token is used.
@@ -209,7 +227,9 @@ Using mqtt.connect(), we are going to connect to the Google IoT Core. And we are
 Once the connection is successful, we callsendData() every 30 seconds to send data to the state topic.
 
 Save the previous file and run the following command:
-> $ sudo node index.js
+```
+$ sudo node index.js
+```
 And we should see something like this:
 ![Pi data](https://packt-type-cloud.s3.amazonaws.com/uploads/sites/2518/2018/05/e6a11f42-5813-43ab-a4ad-1c4f865193ac.png)
 As you can see from the previous Terminal logs, the device first gets connected then starts transmitting the temperature and humidity along with time. We are sending time as well, so we can save it in the BigQuery table and then build a time series chart quite easily.
@@ -251,7 +271,8 @@ Now, we are going to set up a cloud function that will be triggered by the incom
 ![cloud functions](https://packt-type-cloud.s3.amazonaws.com/uploads/sites/2518/2018/05/3dd97d36-b389-4d22-868e-3a0f90e175ad.png)
 The Trigger is set to Cloud Pub/Sub topic and we have selected dht11 as the Topic.
 3. Under the Source code section; make sure you are in the index.js tab and update it as shown here:
-> var BigQuery = require('@google-cloud/bigquery'); 
+```
+var BigQuery = require('@google-cloud/bigquery'); 
 var projectId = 'pi-iot-project'; 
  
 var bigquery = new BigQuery({ 
@@ -288,6 +309,7 @@ exports.pubsubToBQ = function(event, callback) {
       callback(); // task done 
     }); 
 };
+```
 4. In the previous code, we were using the BigQuery Node.js module to insert data into our BigQuery table. Update projectId, datasetName, and tableName as applicable in the code.
 5. Finally, for the Function to execute field, enter pubsubToBQ. pubsubToBQ is the name of the function that has our logic and this function will be called when the data event occurs.
 6. Click on the Create button and our function should be deployed in a minute.
