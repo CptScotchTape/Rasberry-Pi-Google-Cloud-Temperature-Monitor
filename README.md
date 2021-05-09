@@ -36,7 +36,7 @@ As of 5/9/2021, Google Cloud Platform has a free trial for 12 months with $300 t
 
 ![RealTime](https://packt-type-cloud.s3.amazonaws.com/uploads/sites/2518/2018/05/542f3b58-b597-4d26-b2f5-f2ea75c1b1bf.png)
 
-5. Click on the ENABLE & button.
+5. Click on the ENABLE button.
 # Enabling device registry and devices
 The following steps should be used for enabling device registry and devices:
 1. From the left-hand side menu, select IoT Core and you should land on the IoT Core home page:
