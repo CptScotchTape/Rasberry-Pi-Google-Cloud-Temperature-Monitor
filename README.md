@@ -9,16 +9,22 @@ The first thing we are going to do is create a project. If you have already work
 As of the time of writing this book, Google Cloud Platform has a free trial for 12 months with $300 if the offer is still available when you are reading this chapter, I would highly recommend signing up:
 
 1. Once you have signed up, let’s get started by creating a new project. From the top menu bar, select the Select a Project dropdown and click on the plus icon to create a new project. You can fill in the details as illustrated in the following screenshot:
+![New Project](https://packt-type-cloud.s3.amazonaws.com/uploads/sites/2518/2018/05/0cf2051c-3814-46d6-a206-2d72bd506fea.png)
 2. Click on the Create button. Once the project is created, navigate to the Project and you should land on the Home page.
 # Enabling APIs
 1. From the menu on the left-hand side, select APIs & Services | Library as shown in the following screenshot:
+![Library](https://packt-type-cloud.s3.amazonaws.com/uploads/sites/2518/2018/05/cd04f6e8-f9a3-40b5-a42f-1966c0464947.png)
 2. On the following screen, search for pubsub and select the Pub/Sub API from the results and we should land on a page similar to the following:
+![Pub Sub](https://packt-type-cloud.s3.amazonaws.com/uploads/sites/2518/2018/05/6823e4dd-1212-4add-81bb-604354f9be9b.png)
 3. Click on the ENABLE button and we should now be able to use these APIs in our project.
 4. Next, we need to enable the real-time API; search for realtime and we should find something similar to the following:
+![RealTime](https://packt-type-cloud.s3.amazonaws.com/uploads/sites/2518/2018/05/542f3b58-b597-4d26-b2f5-f2ea75c1b1bf.png)
 5. Click on the ENABLE & button.
 # Enabling device registry and devices
 The following steps should be used for enabling device registry and devices:
-1. From the left-hand side menu, select IoT Core and we should land on the IoT Core home page. Instead of the previous screen, if you see a screen to enable APIs, please enable the required APIs from here.
+1. From the left-hand side menu, select IoT Core and we should land on the IoT Core home page: 
+![IoTCore](https://packt-type-cloud.s3.amazonaws.com/uploads/sites/2518/2018/05/f2426d1e-f235-475d-ab9c-45b86445219f.png)
+Instead of the previous screen, if you see a screen to enable APIs, please enable the required APIs from here.
 2. Click on the & Create device registry button. On the Create device registry screen, fill the details as shown in the following table:
 
 | Field | Value |
@@ -28,17 +34,25 @@ The following steps should be used for enabling device registry and devices:
 | Protocol | MQTT, HTTP |
 | Default telemetry topic | device-events |
 | Default state topic | dht11 |
-
-3. Click on the Create button and a new device registry will be created.
-4. From the Pi3-DHT11-Nodes registry page, click on the Add device button and set the Device ID as Pi3-DHT11-Node or any other suitable name.
-5. Leave everything as the defaults and make sure the Device communication is set to Allowed and create a new device.
-6. Now, we are going to add a new public key. To generate a public/private key pair, we need to have OpenSSL command line available. You can download and set up OpenSSL from here: https://www.openssl.org/source/.
-7. Use the following command to generate a certificate pair at the default location on your machine:
+3. After completing all the details, our form should look like the following:
+![Device Registry](https://packt-type-cloud.s3.amazonaws.com/uploads/sites/2518/2018/05/c2cbf9cd-8765-4df0-9791-e8e3954f7c81.png)
+4. Click on the Create button and a new device registry will be created.
+5. From the Pi3-DHT11-Nodes registry page, click on the Add device button and set the Device ID as Pi3-DHT11-Node or any other suitable name.
+6. Leave everything as the defaults and make sure the Device communication is set to Allowed and create a new device.
+7. On the device page, we should see a warning as highlighted in the following screenshot:
+![Device Details](https://packt-type-cloud.s3.amazonaws.com/uploads/sites/2518/2018/05/d835136a-e769-488c-a994-1ecabf7736eb.png)
+8. Now, we are going to add a new public key. To generate a public/private key pair, we need to have OpenSSL command line available. You can download and set up OpenSSL from here: https://www.openssl.org/source/.
+9. Use the following command to generate a certificate pair at the default location on your machine:
 > openssl req -x509 -newkey rsa:2048 -keyout rsa_private.pem -nodes -out rsa_cert.pem -subj "/CN=unused"
+10. If everything goes well, you should see an output as shown here:
+![openSSL](https://packt-type-cloud.s3.amazonaws.com/uploads/sites/2518/2018/05/b2bb3941-646a-484a-9cf0-76f5f5e75c8e.png)
 Do not share these certificates anywhere; anyone with these certificates can connect to Google IoT Core as a device and start publishing data.
-8. Now, once the certificates are created, we will attach them to the device we have created in IoT Core.
-9. Head back to the device page of the Google IoT Core service and under Authentication click on Add public key. On the following screen, fill it in as illustrated
-10. The public key value is the contents of rsa_cert.pem that we generated earlier. Click on the ADD button.
+11. Now, once the certificates are created, we will attach them to the device we have created in IoT Core.
+12. Head back to the device page of the Google IoT Core service and under Authentication click on Add public key. On the following screen, fill it in as illustrated:
+
+![Aith Key](https://packt-type-cloud.s3.amazonaws.com/uploads/sites/2518/2018/05/fa205710-d61b-4b44-98f9-57893cd3705c.png)
+
+13. The public key value is the contents of rsa_cert.pem that we generated earlier. Click on the ADD button.
 Now that the public key has been successfully added, we can connect to the cloud using the private key.
 # Setting up Raspberry Pi 3 with DHT11 node
 Now that we have our device set up in Google IoT Core, we are going to complete the remaining operation on Raspberry Pi 3 to send data.
