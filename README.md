@@ -210,7 +210,7 @@ client.on('message', function(topic, message, packet) {
 function createJwt(projectId, privateKeyFile, algorithm) { 
   var token = { 
     'iat': parseInt(Date.now() / 1000), 
-    'exp': parseInt(Date.now() / 1000) + 86400 * 60, // 1 day 
+    'exp': parseInt(Date.now() / 1000) + 86400 * 5, // 1 day 
     'aud': projectId 
   }; 
   var privateKey = fs.readFileSync(privateKeyFile); 
@@ -379,3 +379,12 @@ Now that the entire setup is done, you will start pumping data into BigQuery:
 
 ## Summary
 This document showed how to setup a basic temperature and humiditiy IoT tracking service using Google Cloud and a Raspberry Pi 3 device. These instructions are relativily flexible with the device you use (Newer Raspberry Pi B models or Raspberry Pi zero nodes) but any changes to Google Cloud may require minor changes to the functions JSON code or BigQuery data collector. Further information about setting up other Google Cloud IoT projects with Raspberry Pi devices can be found in the following links:
+* https://codelabs.developers.google.com/codelabs/iotcore-heartrate#8
+* https://lembergsolutions.com/blog/rapid-hardware-prototyping-connect-your-raspberry-pi-google-cloud-iot
+* https://medium.com/google-developers/building-a-smart-home-cloud-service-with-google-1ee436ac5a03
+
+### Works Cited
+* https://cloud.google.com/community/tutorials/cloud-iot-gateways-rpi
+* https://iot4beginners.com/tutorial-on-google-iot-core-with-raspberry-pi-to-visualize-the-sensor-data/
+* https://hub.packtpub.com/build-google-cloud-iot-application/
+* https://www.instructables.com/IoT-Weather-Station-With-RPi-and-ESP8266/
